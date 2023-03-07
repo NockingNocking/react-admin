@@ -1,6 +1,7 @@
 import axios from 'axios'
-import CancelRequest from '@/utils/request'
+import { CancelRequest, checkStatus } from '@/utils/request'
 import qs from 'qs'
+import { message } from 'antd'
 
 const instance = axios.create({
   baseURL: '',
@@ -22,28 +23,36 @@ instance.interceptors.request.use(
     config.headers.Authorization = 'xxxxx'
     // 序列化post请求数据
     config.data = qs.stringify(config.data)
-
     // 超频请求
     cancelRequest.cancelReq(config)
     cancelRequest.addCancelReqKey(config, axios.CancelToken)
-
     return config
   },
   (err) => {
-    console.log(err)
+    message.error(err)
   }
 )
 
 instance.interceptors.response.use(
   (response) => {
-    cancelRequest.removeRequestKey(response.config)
-    return response.data
+    const {
+      data: { code }
+    } = response
+
+    if (code == 200) {
+      cancelRequest.removeRequestKey(response.config)
+      return response.data
+    } else {
+      const errMsg = checkStatus(code)
+      message.error(errMsg)
+      return Promise.reject(errMsg)
+    }
   },
   (err) => {
     // 移除失败的请求记录
     cancelRequest.removeRequestKey(err.config || {})
     if (axios.isCancel(err)) {
-      console.log('重复请求信息：' + err.message)
+      message.warning('重复请求信息：' + err.message)
     }
     return Promise.reject(err)
   }

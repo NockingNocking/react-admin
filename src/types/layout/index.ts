@@ -1,5 +1,1 @@
-import { MenuList } from './menu'
-
-export interface Layout {
-  menuList: MenuList
-}
+export * from './menu'

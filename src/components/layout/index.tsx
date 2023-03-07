@@ -1,22 +1,33 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './components/header'
-import Menu from './components/menu'
+import SideMenu from './components/menu'
+import { test } from '@/api/modules/test'
 
 const MainLayout = () => {
-  const [isToggle, setIsToggle] = useState(false)
+  const [menus, setMenus] = useState([])
 
-  const onMenuToggle = () => setIsToggle((pre) => !pre)
+  const testClick = async () => {
+    const { data } = await test()
+    setMenus(data)
+  }
+
+  useEffect(() => {
+    testClick()
+  }, [])
 
   return (
     <div className="main-layout">
-      <aside className="main-aside" style={{ width: isToggle ? '230px' : '70px' }}>
-        <Menu onToggle={onMenuToggle} isOnToggle={isToggle} />
+      <aside className="main-aside">
+        <SideMenu menulist={menus} />
       </aside>
       <main className="main">
         <header className="main-header">
           <Header />
         </header>
-        <section className="main-section">{/* 内容区域 */}</section>
+        <section className="main-section">
+          {/* 内容区域 */}
+          <button onClick={() => testClick()}>Test</button>
+        </section>
         {/* <footer className='main-footer'>
 
         </footer> */}
