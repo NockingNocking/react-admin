@@ -9,3 +9,9 @@ export interface IRequest {
   cancelReq: (config: InternalAxiosRequestConfig) => void
   removeRequestKey: (config: InternalAxiosRequestConfig) => void
 }
+
+export interface IResData {
+  code: number
+  data: Array<any>
+  msg: string
+}

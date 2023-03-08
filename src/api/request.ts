@@ -36,6 +36,8 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
+    console.log(response)
+
     const {
       data: { code }
     } = response

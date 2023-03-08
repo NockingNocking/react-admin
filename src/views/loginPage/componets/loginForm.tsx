@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useState } from 'react'
 import { useUpdateEffect } from 'ahooks'
 import '@/style/components/login/loginForm.less'
 import type { UserLogin } from '@/types'
@@ -51,8 +51,13 @@ const LoginForm = () => {
     }
 
     if (checkUserName(userLogin.username) && checkUserPassword(userLogin.password)) {
-      const res = await doLogin(userLogin)
-      console.log(res)
+      const {
+        data: { code, list }
+      } = await doLogin(userLogin)
+
+      if (code === 200) {
+        console.log(list)
+      }
     }
   }
   return (

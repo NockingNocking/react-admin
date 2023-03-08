@@ -95,11 +95,13 @@ export default [
       return {
         code: 200,
         token: 'basjhbdashdkajshdjkashkjdhj',
-        data: [
-          {
-            username: '熊旋风'
-          }
-        ]
+        data: {
+          list: [
+            {
+              username: '熊旋风'
+            }
+          ]
+        }
       }
     }
   }
