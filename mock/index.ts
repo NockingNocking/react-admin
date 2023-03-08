@@ -46,42 +46,42 @@ export default [
         msg: '请求成功！',
         data: [
           {
-            icon: 'icon-rizhiguanli iconfont',
+            icon: 'UserOutlined',
             path: '/main/tubiao',
             auth: 'false',
-            label: '图表展示',
+            label: '用户展示',
             children: [
               {
                 // icon: 'icon-tianjia iconfont',
                 path: '/main/tubiao/zhuxingtu',
                 auth: 'false',
-                label: '柱形图'
+                label: '普通会员列表'
               },
               {
                 // icon: 'icon-tianjia iconfont',
                 path: '/main/tubiao/zhexiantu',
                 auth: 'false',
-                label: '折线图'
+                label: '高阶会员列表'
               }
             ]
           },
           {
-            icon: 'icon-peizhiguanli iconfont',
+            icon: 'NotificationOutlined',
             path: '/main/config',
             auth: 'false',
-            label: '系统配置'
+            label: '消息通知'
           },
           {
-            icon: 'icon-peizhiguanli iconfont',
+            icon: 'PieChartOutlined',
             path: '/main/big',
             auth: 'false',
-            label: '大屏系统'
+            label: '数据分析'
           },
           {
-            icon: 'icon-peizhiguanli iconfont',
+            icon: 'AccountBookOutlined',
             path: '/main/peo',
             auth: 'false',
-            label: '人来人往'
+            label: '收支情况'
           }
         ]
       }

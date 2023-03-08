@@ -10,6 +10,9 @@ export default ({ command }: ConfigEnv): UserConfigExport => {
         '@': resolve(__dirname, 'src')
       }
     },
+    build: {
+      sourcemap: true
+    },
     plugins: [
       react(),
       viteMockServe({
