@@ -86,5 +86,21 @@ export default [
         ]
       }
     }
+  },
+  //用户登录
+  {
+    url: '/user/login', //匹配到指定url
+    method: 'post', //请求类型
+    response: () => {
+      return {
+        code: 200,
+        token: 'basjhbdashdkajshdjkashkjdhj',
+        data: [
+          {
+            username: '熊旋风'
+          }
+        ]
+      }
+    }
   }
 ]

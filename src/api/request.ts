@@ -7,9 +7,10 @@ const instance = axios.create({
   baseURL: '',
   timeout: 50000,
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
     post: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json;charset=UTF-8'
+      // application/x-www-form-urlencoded;charset=UTF-8
+      // multipart/form-data;charset=UTF-8
     }
   }
 })
