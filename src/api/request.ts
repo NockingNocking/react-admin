@@ -3,7 +3,6 @@ import { CancelRequest, checkStatus } from '@/utils/request'
 import qs from 'qs'
 import { message } from 'antd'
 import { TAxiosResponse } from '@/types'
-import { updateIsLoading } from '@/store'
 
 const instance = axios.create({
   baseURL: '/api',
@@ -22,12 +21,9 @@ const cancelRequest = new CancelRequest(new Map())
 
 instance.interceptors.request.use(
   (config) => {
-    updateIsLoading(true)
-    // 添加token
-    config.headers.Authorization = 'xxxxx'
     // 序列化post请求数据
     config.data = qs.stringify(config.data)
-    // 超频请求
+    // 取消重复请求
     cancelRequest.cancelReq(config)
     cancelRequest.addCancelReqKey(config, axios.CancelToken)
     return config

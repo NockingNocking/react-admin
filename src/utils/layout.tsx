@@ -1,12 +1,15 @@
 import { IMenuList } from '@/types'
 import type { MenuProps } from 'antd/es/menu'
 export type MenuItem = Required<MenuProps>['items'][number]
+export type TMenuItem = MenuItem & { auth: boolean }
+
 import React from 'react'
 import {
   UserOutlined,
   PieChartOutlined,
   AccountBookOutlined,
-  NotificationOutlined
+  NotificationOutlined,
+  AreaChartOutlined
 } from '@ant-design/icons'
 
 interface IIcons {
@@ -18,7 +21,8 @@ export const handleSideMenus = (list: Array<IMenuList>): Array<MenuItem> => {
     UserOutlined: UserOutlined,
     PieChartOutlined: PieChartOutlined,
     AccountBookOutlined: AccountBookOutlined,
-    NotificationOutlined: NotificationOutlined
+    NotificationOutlined: NotificationOutlined,
+    AreaChartOutlined: AreaChartOutlined
   }
 
   const tempMenu = list.map((menu) => {
@@ -31,5 +35,5 @@ export const handleSideMenus = (list: Array<IMenuList>): Array<MenuItem> => {
     } as MenuItem
   })
 
-  return tempMenu
+  return tempMenu as unknown as Array<MenuItem>
 }

@@ -2,9 +2,8 @@ import { ChangeEvent, useCallback, useState } from 'react'
 import { useUpdateEffect } from 'ahooks'
 import '@/style/components/login/loginForm.less'
 import type { UserLogin } from '@/types'
-import { doLogin } from '@/api/modules/user'
 import { checkUserName, checkUserPassword } from '@/utils'
-import { useAppSelector, useAppDispatch } from '@/hooks'
+import { useRequest, useAppSelector, useAppDispatch } from '@/hooks'
 import { updateUserInfo, updateToken } from '@/store'
 import { message } from 'antd'
 import { useNavigate } from 'react-router-dom'
@@ -14,6 +13,8 @@ const LoginForm = () => {
     username: '17623529360',
     password: 'zxzx12123'
   })
+
+  const [get, post] = useRequest()
 
   const router = useNavigate()
 
@@ -61,7 +62,7 @@ const LoginForm = () => {
     if (checkUserName(userLogin.username) && checkUserPassword(userLogin.password)) {
       const {
         data: { code, list, token }
-      } = await doLogin(userLogin)
+      } = await post('/user/login')
       if (code === 200) {
         dispatch(updateUserInfo(list))
         dispatch(updateToken(token))
