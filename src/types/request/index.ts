@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CancelTokenStatic, InternalAxiosRequestConfig } from 'axios'
+import { CancelTokenStatic, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
 
 export interface IRequest {
   new (map: Map<any, any>): () => any
@@ -15,3 +15,9 @@ export interface IResData {
   data: Array<any>
   msg: string
 }
+
+type Code = {
+  code?: number
+}
+
+export type TAxiosResponse = AxiosResponse & Code

@@ -4,13 +4,20 @@ import '@/style/components/login/loginForm.less'
 import type { UserLogin } from '@/types'
 import { doLogin } from '@/api/modules/user'
 import { checkUserName, checkUserPassword } from '@/utils'
+import { useAppSelector, useAppDispatch } from '@/hooks'
+import { updateUserInfo, updateToken } from '@/store'
+import { message } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 const LoginForm = () => {
   const [userLogin, setUserLogin] = useState<UserLogin>({
-    username: '',
-    password: ''
+    username: '17623529360',
+    password: 'zxzx12123'
   })
 
+  const router = useNavigate()
+
+  // 获取输入数据
   const userNameChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setUserLogin({
@@ -29,17 +36,18 @@ const LoginForm = () => {
     },
     [userLogin]
   )
-
   // 验证错误
   const [userError, setUserError] = useState<boolean>(true)
   const [passwordError, setPasswordError] = useState<boolean>(true)
-
   useUpdateEffect(() => {
     setUserError(checkUserName(userLogin.username))
   }, [userLogin.username])
   useUpdateEffect(() => {
     setPasswordError(checkUserPassword(userLogin.password))
   }, [userLogin.password])
+  // redux 存储全局用户信息数据
+  const userInfo = useAppSelector((state) => state)
+  const dispatch = useAppDispatch()
 
   // 提交数据
   const submit = async () => {
@@ -52,13 +60,21 @@ const LoginForm = () => {
 
     if (checkUserName(userLogin.username) && checkUserPassword(userLogin.password)) {
       const {
-        data: { code, list }
+        data: { code, list, token }
       } = await doLogin(userLogin)
-
       if (code === 200) {
-        console.log(list)
+        dispatch(updateUserInfo(list))
+        dispatch(updateToken(token))
+        message.success('登陆成功！')
+        router('/main')
+      } else {
+        message.warning('登陆失败！')
       }
     }
+  }
+  // 注册新用户
+  const register = () => {
+    console.log(userInfo)
   }
   return (
     <>
@@ -72,6 +88,7 @@ const LoginForm = () => {
               onChange={(e) => userNameChange(e)}
               type="text"
               name="user"
+              value={userLogin.username}
               placeholder="Your UserName ..."
             />
           </div>
@@ -85,6 +102,7 @@ const LoginForm = () => {
               onChange={(e) => userPasswordChange(e)}
               type="password"
               name="password"
+              value={userLogin.password}
               placeholder="Your Password ..."
             />
           </div>
@@ -92,7 +110,14 @@ const LoginForm = () => {
             <div onClick={() => submit()} className="operation-button box-login">
               Login
             </div>
-            <div className="operation-button box-register">Register</div>
+            <div
+              onClick={() => {
+                register()
+              }}
+              className="operation-button box-register"
+            >
+              Register
+            </div>
           </div>
         </div>
       </div>

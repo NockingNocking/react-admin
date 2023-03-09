@@ -10,15 +10,25 @@ export default ({ command }: ConfigEnv): UserConfigExport => {
         '@': resolve(__dirname, 'src')
       }
     },
-    build: {
-      sourcemap: true
-    },
+
     plugins: [
       react(),
       viteMockServe({
         mockPath: 'mock',
         localEnabled: command === 'serve'
       })
-    ]
+    ],
+    build: {
+      sourcemap: true
+    },
+    server: {
+      proxy: {
+        '/api': {
+          target: 'https://www.fastmock.site/mock/bf2f26568ba45c7362bbe1c850b62048/api',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, '')
+        }
+      }
+    }
   }
 }

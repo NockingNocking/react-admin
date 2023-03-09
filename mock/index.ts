@@ -98,7 +98,8 @@ export default [
         data: {
           list: [
             {
-              username: '熊旋风'
+              username: '熊旋风',
+              age: 18
             }
           ]
         }

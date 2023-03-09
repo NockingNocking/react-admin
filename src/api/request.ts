@@ -2,15 +2,17 @@ import axios from 'axios'
 import { CancelRequest, checkStatus } from '@/utils/request'
 import qs from 'qs'
 import { message } from 'antd'
+import { TAxiosResponse } from '@/types'
+import { updateIsLoading } from '@/store'
 
 const instance = axios.create({
-  baseURL: '',
+  baseURL: '/api',
   timeout: 50000,
   headers: {
     post: {
-      'Content-Type': 'application/json;charset=UTF-8'
-      // application/x-www-form-urlencoded;charset=UTF-8
-      // multipart/form-data;charset=UTF-8
+      // 'Content-Type': 'application/json;charset=UTF-8'
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      // 'Content-Type': 'multipart/form-data;charset=UTF-8'
     }
   }
 })
@@ -20,6 +22,7 @@ const cancelRequest = new CancelRequest(new Map())
 
 instance.interceptors.request.use(
   (config) => {
+    updateIsLoading(true)
     // 添加token
     config.headers.Authorization = 'xxxxx'
     // 序列化post请求数据
@@ -35,18 +38,15 @@ instance.interceptors.request.use(
 )
 
 instance.interceptors.response.use(
-  (response) => {
-    console.log(response)
+  (response: TAxiosResponse) => {
+    // 这里检查请求的全局错误
+    const { status } = response
 
-    const {
-      data: { code }
-    } = response
-
-    if (code == 200) {
+    if (status == 200) {
       cancelRequest.removeRequestKey(response.config)
       return response.data
     } else {
-      const errMsg = checkStatus(code)
+      const errMsg = checkStatus(status)
       message.error(errMsg)
       return Promise.reject(errMsg)
     }

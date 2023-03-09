@@ -77,3 +77,20 @@ export const checkStatus = (state: number): string => {
 
   return `${msg}+,请联系管理员！`
 }
+
+export class GlobalLoading {
+  public isLoading
+  public count
+  constructor() {
+    this.isLoading = false
+    this.count = 0
+  }
+  addRequest() {
+    this.count === 0 ? (this.isLoading = false) : (this.isLoading = true)
+    this.count++
+  }
+  delateReuest() {
+    this.count > 0 ? this.count-- : (this.count = 0) && (this.isLoading = false)
+    this.count--
+  }
+}
