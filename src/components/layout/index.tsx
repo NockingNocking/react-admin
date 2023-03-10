@@ -24,45 +24,58 @@ const MainLayout: React.FC = () => {
   const onMenuClick = (key: string) => {
     navigate(key)
   }
-
+  // 布局
   const {
     token: { colorBgContainer }
   } = theme.useToken()
+  const [contentLeft, setContentLeft] = useState(200)
+  const [collapsed, setCollapsed] = useState(false)
+
+  const operationMenus = (value: boolean) => {
+    setCollapsed(value)
+    if (value) {
+      setContentLeft(100)
+    } else {
+      setContentLeft(200)
+    }
+  }
 
   return (
-    <Layout>
-      <Header className="header">
-        <div className="logo" />
-      </Header>
-      <Content style={{ padding: '0 50px' }}>
-        <Breadcrumb
-          style={{ margin: '16px 0' }}
-          items={[{ title: 'home' }, { title: 'list' }, { title: 'app' }]}
-        ></Breadcrumb>
-        <Layout style={{}}>
-          <Sider style={{ background: colorBgContainer }} width={200}>
-            <Menu
-              mode="inline"
-              defaultSelectedKeys={['/main/dashbord']}
-              defaultOpenKeys={['sub1']}
-              style={{ height: '100%' }}
-              items={menus}
-              onClick={({ key }) => onMenuClick(key)}
-            />
-          </Sider>
-          <Content
-            style={{
-              background: colorBgContainer,
-              padding: '24px',
-              minHeight: 803,
-              marginLeft: '10px'
-            }}
-          >
-            <Outlet />
+    <>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider
+          style={{ position: 'fixed', minHeight: '100vh' }}
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => operationMenus(value)}
+        >
+          <div style={{ height: 32, margin: 16, background: 'rgba(255, 255, 255, 0.2)' }} />
+          <Menu
+            onClick={({ key }) => onMenuClick(key)}
+            theme="dark"
+            defaultSelectedKeys={['/main/dashbord']}
+            mode="inline"
+            items={menus}
+          />
+        </Sider>
+        <Layout className="site-layout" style={{ marginLeft: contentLeft, transition: 'all 0.5s' }}>
+          <Header style={{ padding: 0, background: colorBgContainer }} />
+          <Content style={{ margin: '0 16px' }}>
+            <Breadcrumb style={{ margin: '16px 0' }}></Breadcrumb>
+            <div
+              style={{
+                padding: 24,
+                minHeight: 360,
+                background: colorBgContainer,
+                overflowY: 'scroll'
+              }}
+            >
+              <Outlet />
+            </div>
           </Content>
         </Layout>
-      </Content>
-    </Layout>
+      </Layout>
+    </>
   )
 }
 
