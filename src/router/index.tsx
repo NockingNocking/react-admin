@@ -14,9 +14,9 @@ const routes: Array<NonIndexRouteObject> = [
   },
   {
     path: '/main',
-    element: <HomePage />
+    element: <HomePage />,
+    children: [...routerArray]
   },
-  ...routerArray,
   {
     path: '*',
     element: <FcfPage />

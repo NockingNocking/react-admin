@@ -3,7 +3,7 @@ import lazyLoad from '../layzload'
 
 const baseRoutes = [
   {
-    path: '/base',
+    path: '/main/base',
     element: lazyLoad(lazy(() => import('@/views/basePage')))
   }
 ]
