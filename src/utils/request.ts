@@ -86,11 +86,11 @@ export class GlobalLoading {
     this.count = 0
   }
   addRequest() {
-    this.count === 0 ? (this.isLoading = false) : (this.isLoading = true)
     this.count++
+    this.count === 0 ? (this.isLoading = false) : (this.isLoading = true)
   }
   delateReuest() {
-    this.count > 0 ? this.count-- : (this.count = 0) && (this.isLoading = false)
-    this.count--
+    this.count > 0 ? this.count-- : (this.count = 0)
+    this.isLoading = !(this.count === 0)
   }
 }

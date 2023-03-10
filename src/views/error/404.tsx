@@ -11,7 +11,7 @@ const FzfPage = () => {
         title="404"
         subTitle="页面丢失..."
         extra={
-          <Button onClick={() => navigate(-1)} type="primary">
+          <Button onClick={() => navigate('/main/dashbord')} type="primary">
             返回首页
           </Button>
         }

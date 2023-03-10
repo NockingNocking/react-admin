@@ -1,8 +1,10 @@
 import axios from 'axios'
-import { CancelRequest, checkStatus } from '@/utils/request'
+import { CancelRequest, checkStatus, GlobalLoading } from '@/utils/request'
 import qs from 'qs'
-import { message } from 'antd'
+import { message, Spin } from 'antd'
 import { TAxiosResponse } from '@/types'
+import React from 'react'
+import { delay } from '@/utils'
 
 const instance = axios.create({
   baseURL: '/api',
@@ -18,18 +20,28 @@ const instance = axios.create({
 
 // 实例化取消请求对象
 const cancelRequest = new CancelRequest(new Map())
+const globalLoading = new GlobalLoading()
 
 instance.interceptors.request.use(
   (config) => {
+    // 全局loading
+    globalLoading.addRequest()
+    if (globalLoading.isLoading) {
+      React.createElement(Spin)
+    }
+
     // 序列化post请求数据
     config.data = qs.stringify(config.data)
     // 取消重复请求
+    // TODO:在这里要处理取消请求后删减loding的一条请求
     cancelRequest.cancelReq(config)
     cancelRequest.addCancelReqKey(config, axios.CancelToken)
+
     return config
   },
   (err) => {
     message.error(err)
+    globalLoading.delateReuest()
   }
 )
 
@@ -40,10 +52,12 @@ instance.interceptors.response.use(
 
     if (status == 200) {
       cancelRequest.removeRequestKey(response.config)
+      globalLoading.delateReuest()
       return response.data
     } else {
       const errMsg = checkStatus(status)
       message.error(errMsg)
+      globalLoading.delateReuest()
       return Promise.reject(errMsg)
     }
   },
@@ -53,6 +67,7 @@ instance.interceptors.response.use(
     if (axios.isCancel(err)) {
       message.warning('重复请求信息：' + err.message)
     }
+    globalLoading.delateReuest()
     return Promise.reject(err)
   }
 )
