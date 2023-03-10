@@ -3,9 +3,9 @@ import { Breadcrumb, Layout, Menu, theme } from 'antd'
 import { test } from '@/api/modules/test'
 import { handleSideMenus, MenuItem } from '@/utils'
 import { Outlet, useNavigate } from 'react-router-dom'
-const { Header, Content, Sider } = Layout
-
 import '@/style/components/mainLayout.less'
+
+const { Header, Content, Sider } = Layout
 
 const MainLayout: React.FC = () => {
   // 初始化菜单
